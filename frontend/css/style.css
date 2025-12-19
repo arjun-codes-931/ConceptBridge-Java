@@ -1,0 +1,31 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1rem;
+}
+
+pre {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 0.875rem;
+    border: 1px solid #dee2e6;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.btn {
+    margin: 0.125rem;
+}
