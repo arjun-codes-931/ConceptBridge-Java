@@ -13,9 +13,9 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q FROM Quiz q WHERE q.status = 'ACTIVE'")
     List<Quiz> findActiveQuizzes();
 
-    List<Quiz> findByTeacherId(Long teacherId);
-
-    List<Quiz> findByTopicId(Long topicId);
+//    List<Quiz> findByTeacherId(Long teacherId);
+//
+//    List<Quiz> findByTopicId(Long topicId);
 }
 
 

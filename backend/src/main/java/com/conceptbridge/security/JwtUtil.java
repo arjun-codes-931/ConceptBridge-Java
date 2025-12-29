@@ -1,12 +1,14 @@
 package com.conceptbridge.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +37,28 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
-    public String generateTokenWithClaims(UserDetails userDetails, Map<String, Object> claims) {
-        return createToken(claims, userDetails.getUsername());
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+
+
+//    public String generateTokenWithClaims(UserDetails userDetails, Map<String, Object> claims) {
+//        return createToken(claims, userDetails.getUsername());
+//    }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -70,10 +91,10 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
+//    public Boolean validateToken(String token, UserDetails userDetails) {
+//        final String username = getUsernameFromToken(token);
+//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+//    }
 
     public Boolean validateToken(String token) {
         try {

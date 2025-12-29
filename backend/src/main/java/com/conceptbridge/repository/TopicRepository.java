@@ -33,8 +33,8 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     // Add these pagination methods:
     Page<Topic> findAllByIsActiveTrue(Pageable pageable);
 
-    @Query("SELECT t FROM Topic t WHERE (t.title LIKE %:keyword% OR t.description LIKE %:keyword%) AND t.isActive = true")
-    Page<Topic> findByTitleOrDescriptionContainingAndActive(@Param("keyword") String keyword, Pageable pageable);
-
-    Page<Topic> findByCategoryAndIsActiveTrue(String category, Pageable pageable);
+//    @Query("SELECT t FROM Topic t WHERE (t.title LIKE %:keyword% OR t.description LIKE %:keyword%) AND t.isActive = true")
+//    Page<Topic> findByTitleOrDescriptionContainingAndActive(@Param("keyword") String keyword, Pageable pageable);
+//
+//    Page<Topic> findByCategoryAndIsActiveTrue(String category, Pageable pageable);
 }

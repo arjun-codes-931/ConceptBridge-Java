@@ -14,6 +14,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -21,9 +23,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
+    // List of public endpoints that don't require authentication
+    private static final List<String> PUBLIC_ENDPOINTS = Arrays.asList(
+            "/api/student/test",
+            "/api/student/test/upload",
+            "/api/public/",
+            "/health",
+            "/api/auth/",  // Add your authentication endpoints
+            "/error"       // Error endpoint
+    );
+
     public JwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+
+        // Skip JWT filter for public endpoints
+        for (String publicEndpoint : PUBLIC_ENDPOINTS) {
+            if (path.startsWith(publicEndpoint)) {
+                return true; // Skip filtering
+            }
+        }
+
+        // Also skip for OPTIONS requests (preflight)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -45,14 +76,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println("Authorities: " + authentication.getAuthorities());
-
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
 
         filterChain.doFilter(request, response);
-
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
@@ -62,4 +91,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
 }

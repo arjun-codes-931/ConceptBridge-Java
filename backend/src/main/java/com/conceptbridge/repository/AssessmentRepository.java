@@ -22,16 +22,16 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     @Query("SELECT a FROM Assessment a WHERE a.teacher.id = :teacherId")
     List<Assessment> findByTeacherId(@Param("teacherId") Long teacherId);
 
-    @Query("SELECT a FROM Assessment a WHERE a.topic.id = :topicId")
-    List<Assessment> findByTopicId(@Param("topicId") Long topicId);
-
-    @Query("SELECT a FROM Assessment a WHERE a.type = :type")
-    List<Assessment> findByType(@Param("type") AssessmentType type);
-
-    @Query("SELECT a FROM Assessment a WHERE a.isActive = true AND a.dueDate > :currentDate")
-    List<Assessment> findActiveAssessmentsWithFutureDueDate(@Param("currentDate") LocalDateTime currentDate);
-
-    @Query("SELECT a FROM Assessment a WHERE a.createdAt BETWEEN :startDate AND :endDate")
-    List<Assessment> findByCreatedAtBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+//    @Query("SELECT a FROM Assessment a WHERE a.topic.id = :topicId")
+//    List<Assessment> findByTopicId(@Param("topicId") Long topicId);
+//
+//    @Query("SELECT a FROM Assessment a WHERE a.type = :type")
+//    List<Assessment> findByType(@Param("type") AssessmentType type);
+//
+//    @Query("SELECT a FROM Assessment a WHERE a.isActive = true AND a.dueDate > :currentDate")
+//    List<Assessment> findActiveAssessmentsWithFutureDueDate(@Param("currentDate") LocalDateTime currentDate);
+//
+//    @Query("SELECT a FROM Assessment a WHERE a.createdAt BETWEEN :startDate AND :endDate")
+//    List<Assessment> findByCreatedAtBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     Optional<Assessment> findByIdAndIsActiveTrue(Long id);}

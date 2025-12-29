@@ -1,6 +1,6 @@
 package com.conceptbridge.service.impl;
 
-import com.conceptbridge.dto.TopicDTO;
+import com.conceptbridge.dto.QuestionDTO.TopicDTO;
 import com.conceptbridge.entity.Topic;
 import com.conceptbridge.repository.TopicRepository;
 import com.conceptbridge.service.TopicService;

@@ -1,6 +1,6 @@
 package com.conceptbridge.service;
 
-import com.conceptbridge.dto.TopicDTO;
+import com.conceptbridge.dto.QuestionDTO.TopicDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

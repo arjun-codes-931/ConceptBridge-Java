@@ -1,6 +1,11 @@
 package com.conceptbridge.service;
 
-import com.conceptbridge.dto.*;
+import com.conceptbridge.dto.QuestionDTO.QuizQuestionDTO;
+import com.conceptbridge.dto.studentDTO.AnswerResultDTO;
+import com.conceptbridge.dto.studentDTO.QuizAttemptDTO;
+import com.conceptbridge.dto.studentDTO.QuizDTO;
+import com.conceptbridge.dto.studentDTO.QuizResultDTO;
+
 import java.util.List;
 
 public interface QuizService {

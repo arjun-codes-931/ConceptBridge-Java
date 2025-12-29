@@ -1,16 +1,14 @@
 package com.conceptbridge.service.impl;
 
-import com.conceptbridge.dto.ProjectDTO;
-import com.conceptbridge.dto.StudentDTO;
-import com.conceptbridge.dto.StudentResponseDTO;
+import com.conceptbridge.dto.studentDTO.ProjectDTO;
+import com.conceptbridge.dto.studentDTO.StudentDTO;
+import com.conceptbridge.dto.QuestionDTO.StudentResponseDTO;
 import com.conceptbridge.dto.request.ProjectRequest;
-import com.conceptbridge.dto.response.DashboardResponse;
 import com.conceptbridge.entity.*;
 import com.conceptbridge.repository.*;
 import com.conceptbridge.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -157,13 +155,13 @@ public class StudentServiceImpl implements StudentService {
 
 
 
-    @Override
-    public List<Project> getStudentProjects(Long studentId) {
-        System.out.println("Fetching projects for studentId = " + studentId);
-        List<Project> projects = projectRepository.findByStudentId(studentId);
-        System.out.println(projects);
-        return projects;
-    }
+//    @Override
+//    public List<Project> getStudentProjects(Long studentId) {
+//        System.out.println("Fetching projects for studentId = " + studentId);
+//        List<Project> projects = projectRepository.findByStudentId(studentId);
+//        System.out.println(projects);
+//        return projects;
+//    }
 
 
 

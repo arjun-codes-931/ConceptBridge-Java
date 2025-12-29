@@ -1,10 +1,14 @@
 package com.conceptbridge.service.impl;
 
-import com.conceptbridge.dto.*;
+import com.conceptbridge.dto.QuestionDTO.QuestionOptionDTO;
+import com.conceptbridge.dto.QuestionDTO.QuizQuestionDTO;
+import com.conceptbridge.dto.studentDTO.AnswerResultDTO;
+import com.conceptbridge.dto.studentDTO.QuizAttemptDTO;
+import com.conceptbridge.dto.studentDTO.QuizDTO;
+import com.conceptbridge.dto.studentDTO.QuizResultDTO;
 import com.conceptbridge.entity.*;
 import com.conceptbridge.repository.*;
 import com.conceptbridge.service.QuizService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

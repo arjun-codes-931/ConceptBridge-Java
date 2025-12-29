@@ -8,11 +8,13 @@ import com.conceptbridge.entity.User;
 import com.conceptbridge.security.UserPrincipal;
 import com.conceptbridge.service.UserService;
 import com.conceptbridge.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -28,14 +30,18 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService; // Add this
 
     public AuthController(AuthenticationManager authenticationManager,
                           UserService userService,
-                          JwtUtil jwtUtil) {
+                          JwtUtil jwtUtil,
+                          UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -121,32 +127,39 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestHeader("Authorization") String authHeader) {
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
 
-            if (jwtUtil.validateToken(token)) {
-                String username = jwtUtil.getUsernameFromToken(token);
-                UserPrincipal userPrincipal = (UserPrincipal) userService.loadUserByUsername(username);
+                if (jwtUtil.validateToken(token)) {
+                    String username = jwtUtil.getUsernameFromToken(token);
 
-                String newToken = jwtUtil.generateToken(userPrincipal);
+                    // Use userDetailsService instead of userService
+                    UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
 
-                AuthResponse authResponse = new AuthResponse(
-                        newToken,
-                        "Bearer",
-                        userPrincipal.getId(),
-                        userPrincipal.getUsername(),
-                        userPrincipal.getEmail(),
-                        userPrincipal.getAuthorities().stream()
-                                .map(item -> item.getAuthority())
-                                .toList()
-                );
+                    String newToken = jwtUtil.generateToken(userPrincipal);
 
-                return ResponseEntity.ok(authResponse);
+                    // Create response
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("accessToken", newToken);
+                    response.put("tokenType", "Bearer");
+                    response.put("username", userPrincipal.getUsername());
+                    response.put("roles", userPrincipal.getAuthorities().stream()
+                            .map(item -> item.getAuthority())
+                            .toList());
+
+                    return ResponseEntity.ok(response);
+                }
             }
-        }
 
-        return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Invalid or expired token"));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Token refresh failed", "message", e.getMessage()));
+        }
     }
 
     @GetMapping("/test")

@@ -11,14 +11,17 @@ import java.util.Optional;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    @Query("SELECT t FROM Teacher t WHERE t.id IN :teacherIds")
-    List<Teacher> findByIdIn(@Param("teacherIds") List<Long> teacherIds);
+//    @Query("SELECT t FROM Teacher t WHERE t.id IN :teacherIds")
+//    List<Teacher> findByIdIn(@Param("teacherIds") List<Long> teacherIds);
+
+    @Query("SELECT t FROM Teacher t WHERE t.id = :userId")
+    Optional<Teacher> findByUserId(@Param("userId") Long userId);
+
+//    List<Teacher> findByDepartment(String department);
 
     Optional<Teacher> findById(Long id);
 
-    @Query("SELECT t FROM Teacher t WHERE t.department = :department")
-    List<Teacher> findByDepartment(@Param("department") String department);
 
-    @Query("SELECT t FROM Teacher t WHERE t.specialization LIKE %:specialization%")
-    List<Teacher> findBySpecializationContaining(@Param("specialization") String specialization);
+//    @Query("SELECT t FROM Teacher t WHERE t.specialization LIKE %:specialization%")
+//    List<Teacher> findBySpecializationContaining(@Param("specialization") String specialization);
 }

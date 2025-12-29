@@ -6,17 +6,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService{
     User registerUser(SignupRequest signUpRequest);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
-    User findByUsername(String username);
-    User findByEmail(String email);
+//    User findByUsername(String username);
+//    User findByEmail(String email);
     List<User> getAllUsers();
-    User updateUser(Long userId, User updatedUser);
+//    User updateUser(Long userId, User updatedUser);
     void deleteUser(Long userId);
     User changeUserRole(Long userId, String newRole);
-    List<User> getUsersByRole(String role);
+//    List<User> getUsersByRole(String role);
     Long getTotalUserCount();
     Long getActiveUserCount();
 }

@@ -16,5 +16,5 @@ public interface StudentQuizAttemptRepository extends JpaRepository<StudentQuizA
 
     List<StudentQuizAttempt> findByStudentOrderByCompletedAtDesc(User student);
 
-    List<StudentQuizAttempt> findByQuizId(Long quizId);
+//    List<StudentQuizAttempt> findByQuizId(Long quizId);
 }
